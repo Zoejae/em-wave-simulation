@@ -71,8 +71,9 @@ elif page == "反射折射仿真":
     sin_tt = n1/n2*np.sin(ti)
     total = abs(sin_tt)>=1
     if total:
-        tt_deg=90
-        r=1;t=0
+        tt_deg=90.0
+        r=1.0
+        t=0.0
     else:
         tt_deg=np.degrees(np.arcsin(sin_tt))
         cost=np.cos(np.radians(tt_deg))
@@ -85,15 +86,16 @@ elif page == "反射折射仿真":
     ax=fig.add_subplot(111,projection="3d")
     xx,yy=np.meshgrid([-1.5,1.5],[-1.2,1.2])
     ax.plot_surface(xx,yy,np.zeros_like(xx),alpha=0.25,color="lightblue")
-    ax.quiver(0,0,-0.9,0,0,1.8,c="gray")
+    # 修正法线箭头，拆分起始坐标+增量
+    ax.quiver(0,0,-0.9, 0,0,1.8,color="gray")
     incd=np.array([np.sin(ti),0,-np.cos(ti)])
     refd=np.array([np.sin(ti),0,np.cos(ti)])
     al=0.9
     stinc=-incd*al
-    ax.quiver(stinc[0],stinc[1],stinc[2],incd[0],incd[1],incd[2],c="red",label="入射")
-    ax.quiver(0,0,0,refd[0],refd[1],refd[2],c="orange",label="反射")
+    ax.quiver(stinc[0],stinc[1],stinc[2],incd[0],incd[1],incd[2],color="red",label="入射")
+    ax.quiver(0,0,0,refd[0],refd[1],refd[2],color="orange",label="反射")
     if not total:
         ttd=np.array([np.sin(np.radians(tt_deg)),0,-np.cos(np.radians(tt_deg))])
-        ax.quiver(0,0,0,ttd[0],ttd[1],ttd[2],c="green",label="透射")
+        ax.quiver(0,0,0,ttd[0],ttd[1],ttd[2],color="green",label="透射")
     ax.legend()
     st.pyplot(fig)
