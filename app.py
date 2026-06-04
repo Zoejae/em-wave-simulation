@@ -39,7 +39,8 @@ elif page == "3D矢量电磁波":
     f_scale = st.slider("频率系数",0.5,2.0,1.0)
     direct = st.radio("传播方向",["x","y"])
     grid = st.slider("网格密度",8,24,16)
-    t = st.slider("时间",0,0.0000001,0.00000003,0.000000001)
+    # 【修复滑块：min=0,max=1e-7,默认=5e-8，步长1e-9】
+    t = st.slider("时间", 0.0, 1e-7, 5e-8, 1e-9)
     k=2*np.pi/lam
     omega=2*np.pi*(c/lam)*f_scale
     X,Y=np.meshgrid(np.linspace(0,4,grid),np.linspace(0,4,grid))
@@ -86,7 +87,6 @@ elif page == "反射折射仿真":
     ax=fig.add_subplot(111,projection="3d")
     xx,yy=np.meshgrid([-1.5,1.5],[-1.2,1.2])
     ax.plot_surface(xx,yy,np.zeros_like(xx),alpha=0.25,color="lightblue")
-    # 修正法线箭头，拆分起始坐标+增量
     ax.quiver(0,0,-0.9, 0,0,1.8,color="gray")
     incd=np.array([np.sin(ti),0,-np.cos(ti)])
     refd=np.array([np.sin(ti),0,np.cos(ti)])
